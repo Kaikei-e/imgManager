@@ -23,13 +23,13 @@ func zipSearcher(thePath string)([]string, string){
 	var zipFiles []string
   err := filepath.Walk(thePath, func(path string, info os.FileInfo, err error) error {
     if err != nil {
-        return err
+        log.Fatal(err)
     }
     if info.IsDir() {
         return nil
     }
     if matched, err := filepath.Match("*.zip", filepath.Base(path)); err != nil {
-        return err
+        log.Fatal(err)
     } else if matched {
         zipFiles = append(zipFiles, path)
     }
@@ -39,7 +39,7 @@ func zipSearcher(thePath string)([]string, string){
       return nil, err.Error()
   }
 
-	fmt.Println("Path is " + thePath)
+	log.Println("Path is " + thePath)
 
 	/*
 	files, err := os.ReadDir(thePath)
@@ -48,7 +48,7 @@ func zipSearcher(thePath string)([]string, string){
 	}
 
 	*/
-	fmt.Println("Got the file list. Length is ")
+	log.Println("Got the file list. Length is ")
 	fmt.Sprintln(len(zipFiles))
 
 	//var fileList []string
@@ -61,7 +61,7 @@ func zipSearcher(thePath string)([]string, string){
 		}
 	}
 	*/
-	fmt.Println("Got the zip file list.")
+	log.Println("Got the zip file list.")
 
 	return zipFiles, thePath //, dirPath
 }
@@ -76,14 +76,14 @@ func zipExtracter(filePaths []string, folder string) error {
 		filepath.Clean(destPath)
 		images, err := zip.OpenReader(fp)
 		if err != nil{
-			return err
+			log.Fatalln(err)
 		}
 		defer images.Close()
 
 		for _, f := range images.File{
 			image, err := f.Open()
 			if err != nil{
-				return err
+				log.Fatalln(err)
 			}
 			defer image.Close()
 
@@ -94,7 +94,7 @@ func zipExtracter(filePaths []string, folder string) error {
 				buf := make([]byte, f.UncompressedSize)
 				_, err = io.ReadFull(image, buf)
 				if err != nil{
-					return err
+					log.Fatalln(err)
 				}
 
 				path := filepath.Join(destPath, f.Name)
@@ -105,11 +105,9 @@ func zipExtracter(filePaths []string, folder string) error {
 				defer out.Close()
 
 
-
-
 				errWrite := os.WriteFile(path, buf, f.Mode())
 				if errWrite != nil{
-					return errWrite
+					log.Fatalln(errWrite)
 				}
 			}
 		}

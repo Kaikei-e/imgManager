@@ -1,68 +1,36 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"sync"
 	"C"
-
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
-
-	//"fyne.io/fyne/v2/data/binding"
-	"fyne.io/fyne/v2/widget"
-	//"fyne.io/fyne/v2/layout"
-	//"fyne.io/fyne/v2/dialog"
-
-	"sortinGopher/imagesClassifier"
-	"sortinGopher/permanentPath"
-	"sortinGopher/unzipper"
+	"sync"
+)
+import (
+	"bufio"
+	"imgManager/imagesClassifier"
+	"imgManager/unzipper"
+	"log"
+	"os"
 )
 
 func main() {
+	scanners := bufio.NewScanner(os.Stdin)
+	scanners.Scan()
+	input := scanners.Text()
 
-	a := app.New()
-	w := a.NewWindow("SortinGopher")
-	w.Resize(fyne.NewSize(750, 450))
+	log.Println("The path is " + input)
 
-	input  := widget.NewEntry()
-	input.SetPlaceHolder("Please enter the path where the zip file is located ... ")
+	var wg sync.WaitGroup
+	wg.Add(1)
 
-	content := container.NewVBox(input, widget.NewButton("Save", func(){
-		permanentPath.MkPathFile(input.Text)
+	go unzipper.SortZipFile(input, &wg)
 
-		log.Println("Content was : ", input.Text)
-	}))
+	wg.Wait()
 
-	execButton := widget.NewButton("Perform ZIP decompression and classification", func ()  {
-		fmt.Println("Executing at: " + input.Text)
+	wg.Add(1)
 
-		var wg sync.WaitGroup
-		wg.Add(1)
+	imagesClassifier.FilesClassifier(input, &wg)
 
-		go unzipper.SortZipFile(input.Text, &wg)
-
-		wg.Wait()
-
-		wg.Add(1)
-
-		imagesClassifier.FilesClassifier(input.Text , &wg)
-
-		wg.Wait()
-
-	})
-
-	w.SetContent(fyne.NewContainerWithLayout(
-		layout.NewVBoxLayout(),
-		content,
-		layout.NewSpacer(),
-		execButton,
-	),
-
-)
+	wg.Wait()
 
 
-	w.ShowAndRun()
 }
