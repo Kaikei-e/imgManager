@@ -7,7 +7,6 @@ import (
 	"bufio"
 	"imgManager/imagesClassifier"
 	imggather "imgManager/imgGather"
-	"imgManager/unzipper"
 	"log"
 	"os"
 )
@@ -20,11 +19,6 @@ func main() {
 	log.Println("The path is " + input)
 
 	var wg sync.WaitGroup
-	wg.Add(1)
-
-	go unzipper.SortZipFile(input, &wg)
-
-	wg.Wait()
 
 	wg.Add(1)
 

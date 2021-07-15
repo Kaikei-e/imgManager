@@ -9,6 +9,8 @@ import (
 )
 
 func ImgGather(inputPath string, wg *sync.WaitGroup){
+	defer wg.Done()
+
 	if _, err := os.Stat(inputPath + "/unarranged/"); os.IsNotExist(err) {
 		mkPath := inputPath + "/unarranged/"
 		mkPath = filepath.Clean(mkPath)
@@ -67,12 +69,13 @@ func folderCleaner(inputPath string){
 	for _, f := range files{
 		if f.IsDir(){
 			log.Println(f.Name())
+			os.Stat(f.Name())
 			fEmpty, err := ioutil.ReadDir(inputPath + "/" + f.Name())
 			if err != nil{
 				log.Fatalln(err)
 			}
 
-			if len(fEmpty) == 0{
+			if len(fEmpty) == 0 {
 				os.Remove(inputPath + "/" + f.Name())
 			}
 		}
