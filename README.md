@@ -1,23 +1,19 @@
-# SortinGopher: Unzip program in conjunction with Twitter Media Downloader
+# imgManager is a managing program.
 
-### SortinGopher is a program built with the Go language and the [Fyne](https://github.com/fyne-io/fyne) framework.
-### The program extracts downloaded Zip files in the format of [Twitter media downloader](https://github.com/furyutei/twMediaDownloader) and sorts images and videos by Twitter account ID.
+***Since this program deletes folders, I do not guarantee any damage caused by them. ！！！！
+Although bug fixes and other improvements have been made, please be very careful when using this program.***
 
-### !!!
-### It is easy to use but uses with caution. We are not responsible for any problems in use.
-### !!!
+## imgManager is a program that manages folders classified by SortinGopher a little bit.
 
-# How to use
+The problem with SortinGopher was that a large number of folders were created as a result of ZIP files being unzipped and sorted.
+This program was developed to solve that problem.
+Currently, the files are stored in a fixed "unarranged" folder when the number of files in the folder is less than 10.
+In the future, if I feel like it, I would like to be able to enter the limit on the number of files in the standard input in the CLI.
 
-### 1: Enter the path to the folder containing the zip file you want to extract.
-
-### 2: Click on the button that says "Perform ZIP..." below.
-### That's it.
-
-![image](https://user-images.githubusercontent.com/61903570/115142874-02036600-a07f-11eb-903a-23ff836c5b56.png)
+Please use this program with extreme caution.
 
 
+## How to use it.
 
-### If you find any bugs or improvements, please let me know. It will help us improve this program.
-
-### The next feature to be added is the ability to fix the path and save typing each time. We are currently working on it.
+When you start it, you will be prompted to enter the path of the folder there.
+That's all.
