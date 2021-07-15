@@ -1,4 +1,4 @@
-# imgManager is a managing program.
+# imgManager is a folder managing program.
 
 ***Since this program deletes folders, I do not guarantee any damage caused by them. ！！！！
 Although bug fixes and other improvements have been made, please be very careful when using this program.***
