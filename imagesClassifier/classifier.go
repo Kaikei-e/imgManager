@@ -16,10 +16,10 @@ import (
 func FilesClassifier(dirName string, wg *sync.WaitGroup){
 	defer wg.Done()
 
-	imgClassifier(fileSearcher(dirName), dirName)
+	imgClassifier(FileSearcher(dirName), dirName)
 }
 
-func fileSearcher(dirName string) []string {
+func FileSearcher(dirName string) []string {
 	files, err := ioutil.ReadDir(dirName)
 	if err != nil{
 		panic(err)
@@ -29,7 +29,7 @@ func fileSearcher(dirName string) []string {
 	var paths []string
 	for _, file := range files{
 		if file.IsDir(){
-			paths = append(paths, fileSearcher(filepath.Join(dirName, file.Name()))...)
+			paths = append(paths, FileSearcher(filepath.Join(dirName, file.Name()))...)
 
 			continue
 		}
@@ -37,7 +37,7 @@ func fileSearcher(dirName string) []string {
 		paths = append(paths, filepath.Join(dirName, file.Name()))
 	}
 
-
+	//log.Println(paths)
 
 	return paths
 }

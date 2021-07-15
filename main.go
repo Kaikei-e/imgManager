@@ -7,6 +7,7 @@ import (
 import (
 	"bufio"
 	"imgManager/imagesClassifier"
+	imggather "imgManager/imgGather"
 	"imgManager/unzipper"
 	"log"
 	"os"
@@ -32,5 +33,10 @@ func main() {
 
 	wg.Wait()
 
+	wg.Add(1)
+
+	imggather.ImgGather(input, &wg)
+
+	wg.Wait()
 
 }
