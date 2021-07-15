@@ -5,11 +5,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"sync"
 )
 
-func ImgGather(inputPath string, wg *sync.WaitGroup){
-	defer wg.Done()
+func ImgGather(inputPath string){
 
 	if _, err := os.Stat(inputPath + "/unarranged/"); os.IsNotExist(err) {
 		mkPath := inputPath + "/unarranged/"
