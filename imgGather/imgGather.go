@@ -4,13 +4,15 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"sync"
-
 )
 
 func ImgGather(inputPath string, wg *sync.WaitGroup){
 	if _, err := os.Stat(inputPath + "/unarranged/"); os.IsNotExist(err) {
-		err := os.Mkdir(inputPath + "/unarranged/", 0777)
+		mkPath := inputPath + "/unarranged/"
+		mkPath = filepath.Clean(mkPath)
+		err := os.Mkdir(mkPath, 0777)
 		if err != nil{
 			log.Fatalln(err)
 		}
