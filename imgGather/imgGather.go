@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"sync"
+
 )
 
 func ImgGather(inputPath string, wg *sync.WaitGroup){
@@ -48,4 +49,31 @@ func ImgGather(inputPath string, wg *sync.WaitGroup){
 
 		}
 	}
+
+	folderCleaner(inputPath)
+}
+
+
+func folderCleaner(inputPath string){
+
+	files, err := ioutil.ReadDir(inputPath)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+
+	for _, f := range files{
+		if f.IsDir(){
+			log.Println(f.Name())
+			fEmpty, err := ioutil.ReadDir(inputPath + "/" + f.Name())
+			if err != nil{
+				log.Fatalln(err)
+			}
+
+			if len(fEmpty) == 0{
+				os.Remove(inputPath + "/" + f.Name())
+			}
+		}
+	}
+
 }
